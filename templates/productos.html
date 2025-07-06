@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Menú | Restaurante Marisol</title>
+  <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+  <link rel="icon" href="{{ url_for('static', filename='img/logo.png') }}">
+  <meta name="theme-color" content="#27ae60">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: #f8f9fa;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .producto {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      border-radius: 16px;
+      background: white;
+      overflow: hidden;
+      transition: transform 0.2s ease;
+    }
+    .producto:hover {
+      transform: scale(1.02);
+    }
+    .producto img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    .producto-body {
+      padding: 1rem;
+    }
+    .titulo {
+      font-weight: bold;
+      color: #27ae60;
+    }
+    .btn-agregar {
+      background-color: #27ae60;
+      color: white;
+    }
+    .btn-agregar:hover {
+      background-color: #1e8449;
+    }
+    h3.categoria {
+      border-left: 5px solid #27ae60;
+      padding-left: 12px;
+      margin-top: 30px;
+      margin-bottom: 20px;
+      color: #2c3e50;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container mt-4">
+    <h1 class="text-center text-success mb-5">Menú del Restaurante Marisol</h1>
+
+    {% for categoria, productos in categorias.items() %}
+      <h3 class="categoria">{{ categoria }}</h3>
+      <div class="row">
+        {% for producto in productos %}
+          <div class="col-md-4 mb-4">
+            <div class="producto">
+              <img src="{{ url_for('static', filename='uploads/' ~ producto.imagen) }}" alt="{{ producto.nombre }}">
+              <div class="producto-body">
+                <h5 class="titulo">{{ producto.nombre }}</h5>
+                <p>Precio: S/ {{ producto.precio }}</p>
+                <p>Cantidad disponible: <strong>{{ producto.cantidad }}</strong></p>
+                <form method="POST" action="{{ url_for('aumentar_cantidad', id_producto=producto.id_producto) }}">
+                  <div class="input-group">
+                    <input type="number" name="cantidad" class="form-control" min="1" value="1" required>
+                    <button type="submit" class="btn btn-agregar">Aumentar</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% endfor %}
+  </div>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/static/service-worker.js')
+        .then(reg => console.log('✅ Service Worker registrado'))
+        .catch(err => console.error('❌ Error al registrar SW:', err));
+    }
+  </script>
+</body>
+</html>
