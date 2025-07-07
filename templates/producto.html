@@ -1,0 +1,117 @@
+<!-- manifest + ícono -->
+<link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+<link rel="icon" href="{{ url_for('static', filename='img/logo.png') }}" type="image/png">
+<meta name="theme-color" content="#8B0000">
+
+<!-- service worker -->
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/static/service-worker.js')
+      .then(() => console.log("✅ Service Worker registrado"))
+      .catch(err => console.error("❌ Error en Service Worker", err));
+  }
+</script>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Carta de Productos | Restaurante</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: #f8f5f0;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        h1 {
+            font-family: 'Georgia', serif;
+            color: #8B0000;
+            text-shadow: 1px 1px 2px #ccc;
+            margin-bottom: 40px;
+        }
+        .categoria-title {
+            font-family: 'Georgia', serif;
+            font-size: 28px;
+            color: #A52A2A;
+            border-bottom: 2px solid #d3c1aa;
+            margin-top: 60px;
+            margin-bottom: 20px;
+        }
+        .card {
+            border: none;
+            border-radius: 18px;
+            box-shadow: 0 6px 25px rgba(0,0,0,0.1);
+            background: #fffdf9;
+            transition: transform 0.3s;
+        }
+        .card:hover {
+            transform: scale(1.03);
+        }
+        .card-img-top {
+            height: 180px;
+            object-fit: cover;
+            border-top-left-radius: 18px;
+            border-top-right-radius: 18px;
+            border-bottom: 1px solid #eee;
+        }
+        .card-title {
+            color: #6c2f15;
+            font-weight: bold;
+        }
+        .card-text {
+            color: #5a524d;
+        }
+        .btn-stock {
+            background-color: #c0392b;
+            color: white;
+            font-weight: bold;
+        }
+        .btn-stock:hover {
+            background-color: #a93226;
+        }
+        .form-control {
+            font-size: 14px;
+        }
+        footer {
+            margin-top: 60px;
+            padding: 20px;
+            text-align: center;
+            color: #aaa;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container py-5">
+    <h1 class="text-center">🍽️ Carta del Restaurante Marisol</h1>
+
+    {% for categoria, productos in categorias.items() %}
+        <h3 class="categoria-title">{{ categoria | capitalize }}</h3>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for producto in productos %}
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="{{ url_for('static', filename='uploads/' + producto.imagen) }}" class="card-img-top" alt="Imagen de {{ producto.nombre }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ producto.nombre }}</h5>
+                            <p class="card-text">💰 <strong>S/ {{ producto.precio }}</strong></p>
+                            <p class="card-text">📦 Stock: <strong>{{ producto.cantidad }}</strong></p>
+                            <form action="{{ url_for('aumentar_stock', id_producto=producto.id_producto) }}" method="POST" class="d-flex">
+                                <input type="number" name="cantidad" min="1" class="form-control me-2" placeholder="Sumar" required>
+                                <button type="submit" class="btn btn-stock">➕ Agregar</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+</div>
+
+<footer>
+    &copy; {{ 2025 }} Restaurante Marisol • Todos los derechos reservados
+</footer>
+
+</body>
+</html>
+
