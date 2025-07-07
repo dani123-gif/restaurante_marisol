@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 from flask import Flask, render_template, request, redirect, url_for
 import mysql.connector
 import os  # <- AÑADIDO
@@ -43,7 +43,7 @@ def aumentar_stock(id_producto):
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 10000))
     app.run(debug=True, host='0.0.0.0', port=port)
-=======
+
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, send_file
 import mysql.connector
 from datetime import datetime, timedelta
@@ -282,4 +282,3 @@ if __name__ == '__main__':
 
 
 
->>>>>>> b144749687a30cd295a11ef0857757b8098374c2
