@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 import mysql.connector
+import os  # <- AÑADIDO
 
 app = Flask(__name__)
 
@@ -38,7 +39,6 @@ def aumentar_stock(id_producto):
     db.close()
     return redirect(url_for('mostrar_productos'))
 
-if __name__ == "__main__":
-    import os
-    port = int(os.environ.get("PORT", 10000))
-    app.run(host='0.0.0.0', port=port)
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 10000))
+    app.run(debug=True, host='0.0.0.0', port=port)
