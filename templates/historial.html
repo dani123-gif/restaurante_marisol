@@ -1,0 +1,55 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-lg border-0">
+        <div class="card-header text-white" style="background: linear-gradient(90deg, #8B0000, #A93226);">
+            <h4 class="mb-0">📖 Historial de Reservas</h4>
+        </div>
+        <div class="card-body bg-light">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover text-center align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Cliente</th>
+                            <th>Fecha Reserva</th>
+                            <th>Hora</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for reserva in reservas %}
+                        <tr>
+                            <td>{{ reserva.id_reserva }}</td>
+                            <td>{{ reserva.nombres }} {{ reserva.apellidos }}</td>
+                            <td>{{ reserva.fecha_reserva }}</td>
+                            <td>{{ reserva.hora_reserva }}</td>
+                            <td>
+                                {% if reserva.estado == 'reservado' %}
+                                    <span class="badge bg-warning text-dark">Reservado</span>
+                                {% elif reserva.estado == 'ocupado' %}
+                                    <span class="badge bg-success">Ocupado</span>
+                                {% elif reserva.estado == 'cancelado' %}
+                                    <span class="badge bg-danger">Cancelado</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">{{ reserva.estado }}</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="text-center mt-4">
+                <a href="{{ url_for('index') }}" class="btn btn-outline-primary px-4 py-2 shadow-sm">
+                    🔙 Volver al Inicio
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+

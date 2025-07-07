@@ -1,0 +1,78 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2 class="text-center text-danger mb-4">📅 Reservar Mesa {{ id_mesa }}</h2>
+
+  {% if reserva %}
+    <div class="alert alert-warning shadow-sm border">
+      <h5>🔔 Reserva existente</h5>
+      <ul class="mb-2">
+        <li><strong>Cliente:</strong> {{ reserva.nombres }} {{ reserva.apellidos }}</li>
+        <li><strong>DNI:</strong> {{ reserva.dni }}</li>
+        <li><strong>Teléfono:</strong> {{ reserva.telefono }}</li>
+        <li><strong>Fecha:</strong> {{ reserva.fecha_reserva }}</li>
+        <li><strong>Hora:</strong> {{ reserva.hora_reserva }}</li>
+        <li><strong>Estado:</strong> <span class="badge bg-warning text-dark">{{ reserva.estado }}</span></li>
+      </ul>
+
+      {% if reserva.estado == 'reservada' %}
+        <div class="d-flex flex-wrap gap-2">
+          <form method="POST" action="{{ url_for('confirmar_llegada_reserva', id_reserva=reserva.id_reserva) }}">
+            <button type="submit" class="btn btn-success">✅ Confirmar llegada</button>
+          </form>
+
+          <form method="POST" action="{{ url_for('cancelar_reserva', id_reserva=reserva.id_reserva) }}">
+            <div class="d-flex gap-2 align-items-center">
+              <select name="motivo" required class="form-select">
+                <option value="" disabled selected>📝 Motivo de cancelación</option>
+                <option value="cliente ya ocupó">Cliente ya ocupó</option>
+                <option value="no asistió">No asistió</option>
+              </select>
+              <button type="submit" class="btn btn-danger">❌ Cancelar</button>
+            </div>
+          </form>
+        </div>
+      {% endif %}
+    </div>
+
+  {% else %}
+    <div class="card shadow-sm border">
+      <div class="card-body">
+        <form method="POST" action="{{ url_for('guardar_reserva', id_mesa=id_mesa) }}">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">Nombres:</label>
+              <input type="text" name="nombres" class="form-control" required>
+
+              <label class="form-label mt-2">Apellidos:</label>
+              <input type="text" name="apellidos" class="form-control" required>
+
+              <label class="form-label mt-2">DNI:</label>
+              <input type="text" name="dni" class="form-control" required>
+
+              <label class="form-label mt-2">Teléfono:</label>
+              <input type="text" name="telefono" class="form-control" required>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Fecha deseada:</label>
+              <input type="date" name="fecha" class="form-control" required>
+
+              <label class="form-label mt-2">Hora deseada:</label>
+              <input type="time" name="hora" class="form-control" required>
+
+              <button type="submit" class="btn btn-primary mt-4 w-100">💾 Guardar Reserva</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="text-center mt-4">
+    <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">⬅️ Volver</a>
+  </div>
+</div>
+{% endblock %}
+

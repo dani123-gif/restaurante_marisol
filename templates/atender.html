@@ -1,0 +1,45 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-lg border-0">
+        <div class="card-header text-white" style="background: linear-gradient(90deg, #8B0000, #A93226);">
+            <h4 class="mb-0">🧍 Registrar Cliente - Mesa {{ id_mesa }}</h4>
+        </div>
+        <div class="card-body bg-light">
+            <form method="POST">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="nombres" class="form-label">👤 Nombres</label>
+                        <input type="text" name="nombres" id="nombres" class="form-control" placeholder="Ej: Juan Carlos" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="apellidos" class="form-label">👤 Apellidos</label>
+                        <input type="text" name="apellidos" id="apellidos" class="form-control" placeholder="Ej: Rodríguez Soto" required>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="dni" class="form-label">🆔 DNI</label>
+                        <input type="text" name="dni" id="dni" class="form-control" maxlength="8" placeholder="Ej: 12345678" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="telefono" class="form-label">📞 Teléfono</label>
+                        <input type="text" name="telefono" id="telefono" class="form-control" placeholder="Ej: 987654321" required>
+                    </div>
+                </div>
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-success px-4 py-2 shadow-sm">
+                        ✅ Registrar y Atender
+                    </button>
+                    <a href="{{ url_for('index') }}" class="btn btn-secondary px-4 py-2 shadow-sm">
+                        🔙 Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
